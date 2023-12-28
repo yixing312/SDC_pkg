@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- arg 项是命令行参数 ，default 表示参数采取默认值 -->
+  <!-- 默认机器人名称为 panda -->
+  <!-- 与助教电脑略有不同，对于robot_ip的查询在 franka_control.launch中 -->
+  <arg name="robot" default="panda" doc="choose your robot. Possible values: [panda, fr3]"/>
+  <arg name="arm_id" default="$(arg robot)" />
+  <!-- include 项是引入其他 launch 文件 -->
+  <!-- 这一项说明从 franka_control 开始编译，并将这里所有的参数都传递过去（就是前面俩）-->
+  <!-- 助教电脑上的这一部分是 分别将两个变量传入，区别不大 -->
+  <include file="$(find franka_control)/launch/franka_control.launch" pass_all_args="true"/>
+  <!-- 这一项运行ros程序 ，内容为 load franka_example_controllers /config/franka_example_controllers.yaml-->
+  <!-- 其中对机器人数量及名称、机器人关节数量及名称给出了定义，还有一些参数信息 -->
+  <rosparam command="load" file="$(find franka_example_controllers)/config/franka_example_controllers.yaml" subst_value="true" />
+  <!-- 终于开始引入节点 -->
+  <!-- 名为 controller_manager 的包在opt，里面有spawner.py ，但是需要注意参数中的最后一项是这个文件的标志性参数-->
+  <!-- spawner.py 中根据命令行参数加载和启动控制器，并且监听主题等待返回 true -->
+  <!-- 但是这似乎不足以表现出特殊性 -->
+  <node name="controller_spawner" 
+				pkg="controller_manager" 
+				type="spawner" respawn="false" output="screen"  
+				args="joint_impedance_example_controller"/>
+  <!-- 名为 rviz 的包，也不知道在那，不过似乎是用来仿真的 -->
+  <node pkg="rviz" type="rviz" output="screen" name="rviz" args="-d $(find franka_example_controllers)/launch/robot.rviz -f $(arg arm_id)_link0 --splash-screen $(find franka_visualization)/splash.png"/>
+  <!-- 之后接自己可能用的节点 -->
+  <node pkg="SDC_pkg" type="test_node" name="test_node" output="screen"/>
+</launch>
