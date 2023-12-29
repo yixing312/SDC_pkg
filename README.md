@@ -115,6 +115,18 @@ enum class RobotMode {
 
 笛卡尔 阻抗控制器
 
+$$
+\tau = \tau_c+\tau_n\\
+$$
+
+$$
+\tau_c = J^T(F_-K_d(x_d-x)-D_d J \dot{q})\\
+$$
+
+$$
+\tau_n = (I-J^T J^\dagger)(K_n (q_{d\_null} - q) - 2* \sqrt{K_n} D_n \dot{q})
+$$
+
 - `src/franka_ros/franka_example_controllers/include/franka_example_controllers/pseudo_inversion.h`
   - 在头文件中定义了通过SVD分解求伪逆的函数
 - `src/franka_ros/franka_example_controllers/include/franka_example_controllers/cartesian_impedance_example_controller.h`

@@ -221,7 +221,7 @@ namespace franka_example_controllers
                     (-cartesian_stiffness_ * error - cartesian_damping_ * (jacobian * dq));
 
     // nullspace PD control with damping ratio = 1
-    // 零空间 PD 控制 (I - J^T * J^#)(-K_{null} * error_{null} - 2*\sqrt{K_{null}} dq)
+    // 零空间 PD 控制 (I - J^T * J^#)(K_{null} * error_{null} - 2*\sqrt{K_{null}} dq)
     // 这个的 阻尼控制项有点奇怪的
     tau_nullspace << (Eigen::MatrixXd::Identity(7, 7) -
                       jacobian.transpose() * jacobian_transpose_pinv) *
