@@ -116,7 +116,7 @@ enum class RobotMode {
 笛卡尔 阻抗控制器
 
 $$
-\tau = \tau_c+\tau_n\\
+\tau = \tau_c+\tau_n+\tau_k\\
 $$
 
 $$
