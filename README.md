@@ -11,6 +11,37 @@
 继承自控制基类 `/opt/ros/noetic/include/controller_interface/controller_base.h`
 在代码中重构相关虚函数即可
 
+- `ControllerBase`
+  - 用于重载的虚函数
+    1. `starting`
+    2. `update`
+    3. `stopping`
+    4. `waiting`
+    5. `aborting`
+    6. `initRequest`
+  - 用于检查的标志位
+    1. `isInitialized`
+    2. `isRunning`
+    3. `isStopped`
+    4. `isWaiting`
+    5. `isAborted`
+  - 紧急状态请求
+    1. `updateRequest` `state_ = RUNNING`
+    2. `startRequest` `state_ = CONSTRUCTED`
+    3. `stopRequest` `state_ = CONSTRUCTED`
+    4. `waitRequest` `state_ = CONSTRUCTED`
+    5. `abortRequest` `state_ = CONSTRUCTED`
+  - 状态
+    1. `CONSTRUCTED`
+    2. `INITIALIZED`
+    3. `RUNNING`
+    4. `STOPPED`
+    5. `WAITING`
+    6. `ABORTED`
+- `MultiInterfaceController`
+  - 需要重载的虚函数
+    - `init`
+
 但是仍然没有找到函数入口和辨别标志。
 
 ## 控制代码相关
