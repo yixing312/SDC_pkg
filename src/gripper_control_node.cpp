@@ -1,7 +1,17 @@
+#include <franka_gripper/GraspAction.h>
+#include <franka_gripper/HomingAction.h>
 #include <franka_gripper/MoveAction.h>
+#include <franka_gripper/StopAction.h>
 #include <actionlib/client/simple_action_client.h>
 
-using MoveClient = actionlib::SimpleActionClient<franka_gripper::MoveAction>;
+using franka_gripper::GraspAction;
+using franka_gripper::HomingAction;
+using franka_gripper::MoveAction;
+using franka_gripper::StopAction;
+using GraspClient = actionlib::SimpleActionClient<GraspAction>;
+using HomingClient = actionlib::SimpleActionClient<HomingAction>;
+using MoveClient = actionlib::SimpleActionClient<MoveAction>;
+using StopClient = actionlib::SimpleActionClient<StopAction>;
 
 int main(int argc, char **argv)
 {

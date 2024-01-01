@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+<launch>
+    <arg name="robot_id" default="panda" doc="choose your robot. Possible values: [panda, fr3]"/>
+    <arg name="robot_ip" />
+    <arg name="gripper_homed" default="false" />
+    <!--  -->
+    <group ns="$(arg robot_id)">
+        <include file="$(find franka_gripper)/launch/franka_gripper.launch" >
+            <arg name="robot_ip" value="$(arg robot_ip)" />
+            <arg name="stop_at_shutdown" value="true" />
+            <arg name="arm_id" value="$(arg robot_id)" />
+        </include>
+    </group>
+    <node name="gripper_control_node" pkg="SDC_pkg" type="gripper_control_node" respawn="false" output="screen" >
+        <rosparam param="gripper_homed" subst_value="true">$(arg gripper_homed)</rosparam>
+        <remap from="~joint_states" to="$(arg robot_id)/franka_gripper/joint_states" />
+        <remap from="homing" to="$(arg robot_id)/franka_gripper/homing" />
+        <remap from="grasp" to="$(arg robot_id)/franka_gripper/grasp" />
+        <remap from="move" to="$(arg robot_id)/franka_gripper/move" />
+        <remap from="stop" to="$(arg robot_id)/franka_gripper/stop" />
+    </node>
+</launch>
