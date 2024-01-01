@@ -10,6 +10,10 @@
 #include <pluginlib/class_list_macros.h>
 #include <ros/ros.h>
 
+#include <iostream>
+#include <fstream>
+#include <json.h>
+
 #include <franka_example_controllers/pseudo_inversion.h>
 
 namespace franka_example_controllers
@@ -154,6 +158,10 @@ namespace franka_example_controllers
 
     // set nullspace equilibrium configuration to initial q
     q_d_nullspace_ = q_initial;
+
+    std::ofstream error_out_file;
+    error_out_file.open("../../../SDC_pkg/data/error_out.out", std::ios::out);
+    error_out_file.close(); // 清空记录文件
   }
 
   void CartesianImpedanceExampleController::update(const ros::Time & /*time*/,
@@ -203,6 +211,15 @@ namespace franka_example_controllers
     // - 首先通过 orientation.inverse() * orientation_d_ 求得当前位置到目标位置需要的旋转
     // - 然后将旋转误差的虚数部分放进error的后三个元素
     // - 将误差向量的后三个元素（也就是旋转误差）转换到基座标系中。
+
+    std::ofstream error_out_file;
+    error_out_file.open("../../../SDC_pkg/data/error_out.out", std::ios::app);
+    for (size_t i = 0; i < 6; i++)
+    {
+      error_out_file << error[i] << ",";
+    }
+    error_out_file << std::endl;
+    error_out_file.close();
 
     // compute control
     // allocate variables

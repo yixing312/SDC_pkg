@@ -96,12 +96,12 @@ enum class RobotMode {
 
 1. 句柄类
    1. `state_handle_` 机械臂状态句柄
-   2. 获取机械臂状态，返回值为 `franka::RobotState` ,`franka::RobotState ${STATE_NAME} = state_handle_->getRobotState();`
-   3. `model_handle_` 机械臂模型句柄
-   4. 获取当前的 `Jacobian` 矩阵，返回值为 `std::array<double, 42>`,`${JACOBIAN_ARRAY_NAME} = model_handle_->getZeroJacobian(franka::Frame::kEndEffector);`
-   5. 获取当前的科氏向量 ，返回值为 `std::array<double, 7>`,`${CORIOLIS_ARRAY_NAME} = model_handle_->getCoriolis()`
-   6. `joint_handles_` 机械臂关节句柄
-   7. 将计算好的关节力矩发送给机械臂，`joint_handles_[i]->setCommand(tau_d(i));`
+      1. 获取机械臂状态，返回值为 `franka::RobotState` ,`franka::RobotState ${STATE_NAME} = state_handle_->getRobotState();`
+   2. `model_handle_` 机械臂模型句柄
+      1. 获取当前的 `Jacobian` 矩阵，返回值为 `std::array<double, 42>`,`${JACOBIAN_ARRAY_NAME} = model_handle_->getZeroJacobian(franka::Frame::kEndEffector);`
+      2. 获取当前的科氏向量 ，返回值为 `std::array<double, 7>`,`${CORIOLIS_ARRAY_NAME} = model_handle_->getCoriolis()`
+   3. `joint_handles_` 机械臂关节句柄
+      1. 将计算好的关节力矩发送给机械臂，`joint_handles_[i]->setCommand(tau_d(i));`
 2. `franka::RobotState` 机械臂状态
    1. 获取当前关节角度,返回值为 `std::array<double, 7>`,`${JOINT_ARRAY_NAME} = robot_state.q.data();`
 3. 变换类
@@ -124,7 +124,7 @@ $$
 $$
 
 $$
-\tau_n = (I-J^T J^\dagger)(K_n (q_{d\_null} - q) - 2* \sqrt{K_n} D_n \dot{q})
+\tau_n = (I-J^T J^\dagger)(K_n (q_{d\_null} - q) - 2* \sqrt{K_n} \dot{q})
 $$
 
 - `src/franka_ros/franka_example_controllers/include/franka_example_controllers/pseudo_inversion.h`
@@ -158,3 +158,8 @@ $$
   - `starting()`
     - 初始化姿态和目标姿态，从RobotState中获取平移和旋转分量
   - `update()`
+
+## 优化方向
+
+- 数据可视化
+-
